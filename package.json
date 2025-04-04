@@ -1,0 +1,17 @@
+{
+  "name": "securepass",
+  "version": "1.0.0",
+  "main": "public/index.js",
+  "repository": "http://github.com/azraftaohid/securepass",
+  "author": "Azraf Taohid <azraftaohid@outlook.com>",
+  "license": "MIT",
+  "packageManager": "yarn@1.22.22",
+  "scripts": {
+    "dev": "wrangler pages dev",
+    "deploy": "wrangler pages deploy"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20250404.0",
+    "wrangler": "^4.7.1"
+  }
+}
