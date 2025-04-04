@@ -27,14 +27,32 @@ const generateRandomWords = async () => {
 	Promise.all(wordsPromise).then((words) => {
 		output.textContent = words.join(" ");
 	}).catch((err) => {
-        console.error("Error fetching words:", err);
+		console.error("Error fetching words:", err);
 		output.textContent = "Error fetching words.";
 	});
 };
 
-// Route Handling
-if (window.location.pathname === "/words") {
-	generateRandomWords();
-} else {
-	generateRandomString();
+function generateOutput() {
+	if (window.location.pathname === "/words") {
+		generateRandomWords();
+	} else {
+		generateRandomString();
+	}
 }
+
+generateOutput();
+
+// Copy to clipboard
+document.getElementById('copy-btn').addEventListener('click', () => {
+	const text = document.getElementById('output').innerText;
+	navigator.clipboard.writeText(text).then(() => {
+		const btn = document.getElementById('copy-btn');
+		btn.textContent = 'Copied!';
+		setTimeout(() => (btn.textContent = 'Copy'), 1500);
+	});
+});
+
+// Regenerate output
+document.getElementById('regen-btn').addEventListener('click', () => {
+	generateOutput();
+});

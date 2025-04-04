@@ -1,0 +1,86 @@
+/* style.css */
+
+html {
+	height: 100%;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 2rem;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+	background-color: #f9f9f9;
+	color: #222;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 100vh;
+	text-align: center;
+	box-sizing: border-box;
+	overflow: hidden;
+	transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Allow scrolling only if content overflows */
+@media (max-height: 300px) {
+	body {
+		overflow: auto;
+	}
+}
+
+pre#output {
+	font-size: 2rem;
+	font-weight: 500;
+	padding: 1rem 2rem;
+	border-radius: 12px;
+	background: rgba(0, 0, 0, 0.03);
+	box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+	word-break: break-word;
+	white-space: pre-wrap;
+	max-width: 90%;
+	transition: background 0.3s ease, color 0.3s ease;
+}
+
+.buttons {
+	display: flex;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+button {
+	padding: 0.6rem 1.2rem;
+	font-size: 1rem;
+	font-weight: 500;
+	background-color: #007aff;
+	color: white;
+	border: none;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+button:hover {
+	background-color: #005fcb;
+}
+
+/* Dark mode */
+@media (prefers-color-scheme: dark) {
+	body {
+		background-color: #121212;
+		color: #eee;
+	}
+
+	pre#output {
+		background: rgba(255, 255, 255, 0.05);
+	}
+
+	button {
+		background-color: #3391ff;
+	}
+
+	button:hover {
+		background-color: #1e7ae6;
+	}
+}
