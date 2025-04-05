@@ -38,7 +38,7 @@ const generateRandomWords = async () => {
 	});
 
 	const words = await Promise.all(wordsPromise);
-	return words.join(" ");
+	return words.join("-");
 };
 
 function generateOutput() {
