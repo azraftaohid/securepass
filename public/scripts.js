@@ -16,7 +16,7 @@ const fetchWordList = async (listNo) => {
 };
 
 const generateRandomString = () => {
-	output.textContent = nanoid(size || 20);
+	 return nanoid(size || 20);
 };
 
 const generateRandomWords = async () => {
@@ -28,23 +28,30 @@ const generateRandomWords = async () => {
 		return words[Math.floor(Math.random() * words.length)];
 	});
 
-	Promise.all(wordsPromise).then((words) => {
-		output.textContent = words.join(" ");
-	}).catch((err) => {
-		console.error("Error fetching words:", err);
-		output.textContent = "Error fetching words.";
-	});
+	const words = await Promise.all(wordsPromise);
+	return words.join(" ");
 };
 
 function generateOutput() {
 	if (path === "/words") {
-		generateRandomWords();
+		return generateRandomWords();
 	} else {
-		generateRandomString();
+		return generateRandomString();
 	}
 }
 
-generateOutput();
+async function updateOutput() {
+	try {
+		output.textContent = await generateOutput();
+	} catch (error) {
+		console.error("Error updating output:", error);
+		output.textContent = "Error generating output.";
+		return;
+	}
+}
+
+// Initial render
+updateOutput();
 
 // Copy to clipboard
 document.getElementById('copy-btn').addEventListener('click', () => {
@@ -58,7 +65,7 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 
 // Regenerate output
 document.getElementById('regen-btn').addEventListener('click', () => {
-	generateOutput();
+	updateOutput();
 });
 
 if (path === '/words') {
