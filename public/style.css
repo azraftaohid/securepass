@@ -49,7 +49,7 @@ pre#output {
 	margin-top: 1rem;
 }
 
-button {
+button, a.btn {
 	padding: 0.6rem 1.2rem;
 	font-size: 1rem;
 	font-weight: 500;
@@ -59,9 +59,13 @@ button {
 	border-radius: 8px;
 	cursor: pointer;
 	transition: background-color 0.2s ease;
+	text-decoration: none;
+	/* Prevent underline on links */
+	display: inline-block;
+	/* Makes <a> behave like button */
 }
 
-button:hover {
+button:hover, a.btn:hover {
 	background-color: #005fcb;
 }
 
@@ -76,11 +80,11 @@ button:hover {
 		background: rgba(255, 255, 255, 0.05);
 	}
 
-	button {
+	button, a.btn {
 		background-color: #3391ff;
 	}
 
-	button:hover {
+	button:hover, a.btn:hover {
 		background-color: #1e7ae6;
 	}
 }

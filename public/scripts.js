@@ -8,7 +8,7 @@ const path = window.location.pathname;
 const params = new URLSearchParams(window.location.search);
 const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
 
-const toggleBtn = document.getElementById('toggle-btn');
+const toggleLink = document.getElementById('toggle-link');
 
 const fetchWordList = async (listNo) => {
 	const res = await fetch("assets/word-list-" + listNo + ".json");
@@ -62,13 +62,9 @@ document.getElementById('regen-btn').addEventListener('click', () => {
 });
 
 if (path === '/words') {
-	toggleBtn.textContent = 'Characters';
-	toggleBtn.addEventListener('click', () => {
-		window.location.href = '/';
-	});
+	toggleLink.textContent = 'Characters';
+	toggleLink.href = '/';
 } else {
-	toggleBtn.textContent = 'Words';
-	toggleBtn.addEventListener('click', () => {
-		window.location.href = '/words';
-	});
+	toggleLink.textContent = 'Words';
+	toggleLink.href = '/words';
 }
