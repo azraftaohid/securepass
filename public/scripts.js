@@ -5,27 +5,36 @@ const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const DIGITS = "0123456789";
 const SPECIAL_CHARS = "!@#$%^&*()_+";
 
-const CHARACTERS = UPPERCASE_CHARS + LOWERCASE_CHARS + DIGITS + SPECIAL_CHARS;
-
-const output = document.getElementById("output");
-
 const path = window.location.pathname;
 
 // Get URL parameters
 const params = new URLSearchParams(window.location.search);
 const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
 
+const output = document.getElementById("output");
 const toggleLink = document.getElementById('toggle-link');
+const charOptionsDiv = document.getElementById("char-options");
+
+const getCurrentCharset = () => {
+	let chars = "";
+	if (document.getElementById("opt-lower")?.checked) chars += LOWERCASE_CHARS;
+	if (document.getElementById("opt-upper")?.checked) chars += UPPERCASE_CHARS;
+	if (document.getElementById("opt-digits")?.checked) chars += DIGITS;
+	if (document.getElementById("opt-special")?.checked) chars += SPECIAL_CHARS;
+	return chars || LOWERCASE_CHARS; // fallback to lowercase
+};
 
 const fetchWordList = async (listNo) => {
 	const res = await fetch("assets/word-list-" + listNo + ".json");
 	return res.json();
 };
 
-let strGenerator;
+const generators = {};
 const generateRandomString = () => {
-	if (!strGenerator) strGenerator = customAlphabet(CHARACTERS);
-	return strGenerator(size || 20);
+	const charset = getCurrentCharset();
+	if (!generators[charset]) generators[charset] = customAlphabet(charset);
+
+	return generators[charset](size || 20);
 };
 
 const generateRandomWords = async () => {
@@ -61,6 +70,17 @@ async function updateOutput() {
 
 // Initial render
 updateOutput();
+
+// disable checkboxes on /words
+if (path === "/words") {
+	document.querySelectorAll("#char-options input").forEach(input => input.disabled = true);
+} else {
+	document.querySelectorAll("#char-options input").forEach(input => {
+		input.addEventListener("change", () => {
+			updateOutput(); // regenerate on change
+		});
+	});
+}
 
 // Copy to clipboard
 document.getElementById('copy-btn').addEventListener('click', () => {
