@@ -1,5 +1,7 @@
 import { customAlphabet } from "https://cdn.jsdelivr.net/npm/nanoid@5.1.5/index.browser.min.js";
 
+const RECENTS_KEY = 'recentCopies';
+
 const LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
 const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 const DIGITS = "0123456789";
@@ -14,6 +16,7 @@ const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
 const output = document.getElementById("output");
 const toggleLink = document.getElementById('toggle-link');
 const charOptionsDiv = document.getElementById("char-options");
+const recentCopiesDiv = document.getElementById('recent-copies');
 
 const getCurrentCharset = () => {
 	let chars = "";
@@ -82,6 +85,32 @@ if (path === "/words") {
 	});
 }
 
+function isRecentsVisible() {
+	return recentCopiesDiv.classList.contains('show');
+}
+
+function addToRecents(text) {
+	let list = JSON.parse(sessionStorage.getItem(RECENTS_KEY)) || [];
+	if (list[0] === text) return; // Don't add if it's already the first item
+
+	list.unshift(text);
+	if (list.length > 5) list = list.slice(0, 5);
+	sessionStorage.setItem(RECENTS_KEY, JSON.stringify(list));
+}
+
+function toggleRecents() {
+	recentCopiesDiv.classList.toggle('show');
+}
+
+function updateRecents() {
+	const list = JSON.parse(sessionStorage.getItem(RECENTS_KEY)) || [];
+	if (list.length === 0) {
+		recentCopiesDiv.innerHTML = '<p style="margin:0;">No recent copies</p>';
+	} else {
+		recentCopiesDiv.innerHTML = '<ul>' + list.map(item => `<li>${item}</li>`).join('') + '</ul>';
+	}
+}
+
 // Copy to clipboard
 document.getElementById('copy-btn').addEventListener('click', () => {
 	const text = document.getElementById('output').innerText;
@@ -89,12 +118,20 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 		const btn = document.getElementById('copy-btn');
 		btn.textContent = 'Copied!';
 		setTimeout(() => (btn.textContent = 'Copy'), 1500);
+
+		addToRecents(text);
+		if (isRecentsVisible()) updateRecents();
 	});
 });
 
 // Regenerate output
 document.getElementById('regen-btn').addEventListener('click', () => {
 	updateOutput();
+});
+
+document.getElementById('toggle-recents')?.addEventListener('click', () => {
+	if (!isRecentsVisible()) updateRecents();
+	toggleRecents();
 });
 
 if (path === '/words') {
