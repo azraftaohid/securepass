@@ -16,6 +16,7 @@ const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
 const output = document.getElementById("output");
 const toggleLink = document.getElementById('toggle-link');
 const charOptionsDiv = document.getElementById("char-options");
+const toggleRecentsBtn = document.getElementById('toggle-recents');
 const recentCopiesDiv = document.getElementById('recent-copies');
 
 const getCurrentCharset = () => {
@@ -91,15 +92,18 @@ function isRecentsVisible() {
 
 function addToRecents(text) {
 	let list = JSON.parse(sessionStorage.getItem(RECENTS_KEY)) || [];
-	if (list[0] === text) return; // Don't add if it's already the first item
+	if (list[0] && list[0].text === text) return; // Don't add if it's already the first item
 
-	list.unshift(text);
+	list.unshift({ text, time: new Date().toISOString() });
 	if (list.length > 5) list = list.slice(0, 5);
 	sessionStorage.setItem(RECENTS_KEY, JSON.stringify(list));
 }
 
 function toggleRecents() {
 	recentCopiesDiv.classList.toggle('show');
+
+	if (isRecentsVisible()) toggleRecentsBtn.textContent = "Hide recents";
+	else toggleRecentsBtn.textContent = "Show recents";
 }
 
 function updateRecents() {
@@ -107,7 +111,18 @@ function updateRecents() {
 	if (list.length === 0) {
 		recentCopiesDiv.innerHTML = '<p style="margin:0;">No recent copies</p>';
 	} else {
-		recentCopiesDiv.innerHTML = '<ul>' + list.map(item => `<li>${item}</li>`).join('') + '</ul>';
+		recentCopiesDiv.innerHTML = `<ul>
+			${list.map(item => {
+				const date = new Date(item.time);
+				const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+				return `<li>
+					<div class="recent-item">
+						<span class="text">${item.text}</span>
+						<span class="time">${timeStr}</span>
+					</div>
+				</li>`;
+			}).join('')}
+		</ul>`;
 	}
 }
 
@@ -129,7 +144,7 @@ document.getElementById('regen-btn').addEventListener('click', () => {
 	updateOutput();
 });
 
-document.getElementById('toggle-recents')?.addEventListener('click', () => {
+toggleRecentsBtn.addEventListener('click', () => {
 	if (!isRecentsVisible()) updateRecents();
 	toggleRecents();
 });
