@@ -40,29 +40,31 @@
 </head>
 
 <body>
-	<pre id="output">Loading...</pre>
-	<div class="buttons">
-		<button id="copy-btn">Copy</button>
-		<button id="regen-btn">Regenerate</button>
-		<a id="toggle-link" class="btn" href="/words">Words</a>
-	</div>
-	<div id="char-options">
-		<label class="custom-checkbox" for="opt-lower">
-			<input type="checkbox" id="opt-lower" checked>
-			<span class="box"></span><span>Lowercase</span>
-		</label>
-		<label class="custom-checkbox" for="opt-upper">
-			<input type="checkbox" id="opt-upper" checked>
-			<span class="box"></span><span>Uppercase</span>
-		</label>
-		<label class="custom-checkbox" for="opt-digits">
-			<input type="checkbox" id="opt-digits" checked>
-			<span class="box"></span><span>Digits</span>
-		</label>
-		<label class="custom-checkbox" for="opt-special">
-			<input type="checkbox" id="opt-special" checked>
-			<span class="box"></span><span>Punctuations</span>
-		</label>
+	<div id="top-stack">
+		<pre id="output">Loading...</pre>
+		<div class="buttons">
+			<button id="copy-btn">Copy</button>
+			<button id="regen-btn">Regenerate</button>
+			<a id="toggle-link" class="btn" href="/words">Words</a>
+		</div>
+		<div id="char-options">
+			<label class="custom-checkbox" for="opt-lower">
+				<input type="checkbox" id="opt-lower" checked>
+				<span class="box"></span><span>Lowercase</span>
+			</label>
+			<label class="custom-checkbox" for="opt-upper">
+				<input type="checkbox" id="opt-upper" checked>
+				<span class="box"></span><span>Uppercase</span>
+			</label>
+			<label class="custom-checkbox" for="opt-digits">
+				<input type="checkbox" id="opt-digits" checked>
+				<span class="box"></span><span>Digits</span>
+			</label>
+			<label class="custom-checkbox" for="opt-special">
+				<input type="checkbox" id="opt-special" checked>
+				<span class="box"></span><span>Punctuations</span>
+			</label>
+		</div>
 	</div>
 	<div id="bottom-stack">
 		<div id="recent-copies" class="recent-container"></div>

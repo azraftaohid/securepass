@@ -19,14 +19,23 @@ body {
 	min-height: 100vh;
 	text-align: center;
 	box-sizing: border-box;
-	overflow: hidden;
+	overflow: auto;
 	transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Allow scrolling only if content overflows */
-@media (max-height: 300px) {
-	body {
-		overflow: auto;
+#top-stack {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-items: center;
+	flex-grow: 1;;
+
+	*:first-child {
+		margin-top: auto;
+	}
+
+	*:last-child {
+		margin-bottom: auto;
 	}
 }
 
@@ -40,6 +49,8 @@ pre#output {
 	word-break: break-word;
 	white-space: pre-wrap;
 	max-width: 90%;
+	max-height: calc(100vh - 480px);
+	overflow-y: auto;
 	transition: background 0.3s ease, color 0.3s ease;
 }
 
@@ -121,13 +132,11 @@ a.btn:hover {
 }
 
 #bottom-stack {
-	position: fixed;
-	bottom: 0;
-	left: 50%;
-	transform: translateX(-50%);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	justify-content: end;
+	height: 96px;
 	gap: 0.5rem;
 	z-index: 20;
 }
@@ -138,18 +147,24 @@ a.btn:hover {
 	transition: opacity 0.3s ease, transform 0.3s ease;
 	max-width: 90vw;
 	width: 400px;
-	height: 0;
 	background-color: var(--bg-alt);
 	color: var(--fg);
 	border: 1px solid var(--border);
 	border-radius: 8px;
-	padding: 1rem;
 	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.recent-container * {
+	height: 0;
 }
 
 .recent-container.show {
 	opacity: 1;
 	visibility: visible;
+	padding: 1rem;
+}
+
+.recent-container.show * {
 	height: auto;
 }
 
@@ -157,6 +172,8 @@ a.btn:hover {
 	list-style: none;
 	padding: 0;
 	margin: 0;
+	max-height: calc(100vh - 240px);
+	overflow-y: auto;
 }
 
 .recent-container li {
