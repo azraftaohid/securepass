@@ -54,21 +54,19 @@ a.btn {
 	padding: 0.6rem 1.2rem;
 	font-size: 1rem;
 	font-weight: 500;
-	background-color: #007aff;
-	color: white;
-	border: none;
+	background-color: transparent;
+	color: inherit;
+	border: 2px solid currentColor;
 	border-radius: 8px;
 	cursor: pointer;
-	transition: background-color 0.2s ease;
+	transition: all 0.2s ease;
 	text-decoration: none;
-	/* Prevent underline on links */
 	display: inline-block;
-	/* Makes <a> behave like button */
 }
 
 button:hover,
 a.btn:hover {
-	background-color: #005fcb;
+	background-color: rgba(0, 0, 0, 0.05); /* Light overlay for light mode */
 }
 
 /* Dark mode */
@@ -82,13 +80,9 @@ a.btn:hover {
 		background: rgba(255, 255, 255, 0.05);
 	}
 
-	button,
-	a.btn {
-		background-color: #3391ff;
-	}
-
 	button:hover,
 	a.btn:hover {
-		background-color: #1e7ae6;
+		background-color: rgba(255, 255, 255, 0.1);
+		/* Light overlay for dark mode */
 	}
 }
