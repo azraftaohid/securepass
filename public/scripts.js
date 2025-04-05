@@ -2,9 +2,13 @@ import { nanoid } from "https://cdn.jsdelivr.net/npm/nanoid@4.0.0/nanoid.js";
 
 const output = document.getElementById("output");
 
+const path = window.location.pathname;
+
 // Get URL parameters
 const params = new URLSearchParams(window.location.search);
 const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
+
+const toggleBtn = document.getElementById('toggle-btn');
 
 const fetchWordList = async (listNo) => {
 	const res = await fetch("assets/word-list-" + listNo + ".json");
@@ -33,7 +37,7 @@ const generateRandomWords = async () => {
 };
 
 function generateOutput() {
-	if (window.location.pathname === "/words") {
+	if (path === "/words") {
 		generateRandomWords();
 	} else {
 		generateRandomString();
@@ -56,3 +60,15 @@ document.getElementById('copy-btn').addEventListener('click', () => {
 document.getElementById('regen-btn').addEventListener('click', () => {
 	generateOutput();
 });
+
+if (path === '/words') {
+	toggleBtn.textContent = 'Characters';
+	toggleBtn.addEventListener('click', () => {
+		window.location.href = '/';
+	});
+} else {
+	toggleBtn.textContent = 'Words';
+	toggleBtn.addEventListener('click', () => {
+		window.location.href = '/words';
+	});
+}
