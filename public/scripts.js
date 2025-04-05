@@ -1,4 +1,11 @@
-import { nanoid } from "https://cdn.jsdelivr.net/npm/nanoid@4.0.0/nanoid.js";
+import { customAlphabet } from "https://cdn.jsdelivr.net/npm/nanoid@5.1.5/index.browser.min.js";
+
+const LOWERCASE_CHARS = "abcdefghijklmnopqrstuvwxyz";
+const UPPERCASE_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const DIGITS = "0123456789";
+const SPECIAL_CHARS = "!@#$%^&*()_+";
+
+const CHARACTERS = UPPERCASE_CHARS + LOWERCASE_CHARS + DIGITS + SPECIAL_CHARS;
 
 const output = document.getElementById("output");
 
@@ -15,8 +22,10 @@ const fetchWordList = async (listNo) => {
 	return res.json();
 };
 
+let strGenerator;
 const generateRandomString = () => {
-	 return nanoid(size || 20);
+	if (!strGenerator) strGenerator = customAlphabet(CHARACTERS);
+	return strGenerator(size || 20);
 };
 
 const generateRandomWords = async () => {
