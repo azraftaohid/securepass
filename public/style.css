@@ -28,7 +28,7 @@ body {
 	flex-direction: column;
 	align-items: center;
 	justify-items: center;
-	flex-grow: 1;;
+	flex-grow: 1;
 
 	*:first-child {
 		margin-top: auto;
@@ -77,7 +77,8 @@ a.btn {
 
 button:hover,
 a.btn:hover {
-	background-color: rgba(0, 0, 0, 0.05); /* Light overlay for light mode */
+	background-color: rgba(0, 0, 0, 0.05);
+	/* Light overlay for light mode */
 }
 
 #char-options {
@@ -223,11 +224,72 @@ footer a {
 	text-decoration: underline;
 }
 
+/* Slider container */
+.slider-group {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+	margin-top: 1rem;
+}
+
+/* Slider element */
+input[type="range"] {
+	-webkit-appearance: none;
+	width: 200px;
+	height: 1rem;
+	background-color: var(--bg);
+	cursor: pointer;
+	transition: background-color 0.2s ease;
+}
+
+/* Track */
+input[type="range"]::-webkit-slider-runnable-track {
+	height: 0.5rem;
+	background: var(--border);
+	border-radius: 4px;
+}
+input[type="range"]::-moz-range-track {
+	height: 0.5rem;
+	background: var(--border);
+	border-radius: 4px;
+}
+
+/* Thumb (the knob) */
+input[type="range"]::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	width: 1.2rem;
+	height: 1.2rem;
+	background-color: var(--fg);
+	border: none;
+	border-radius: 50%;
+	margin-top: -0.35rem; /* to center thumb vertically */
+	transition: background-color 0.2s ease;
+}
+input[type="range"]::-moz-range-thumb {
+	width: 1.2rem;
+	height: 1.2rem;
+	background-color: var(--fg);
+	border: none;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+/* Focus ring removal */
+input[type="range"]:focus {
+	outline: none;
+}
+
+/* Optional: hover effect */
+input[type="range"]:hover::-webkit-slider-thumb {
+	background-color: var(--fg-alt);
+}
+
 /* Dark/light theme variables */
 @media (prefers-color-scheme: dark) {
 	:root {
 		--bg: #121212;
 		--fg: #eee;
+		--fg-alt: #ccc;
 		--border: #333;
 		--bg-alt: #1e1e1e;
 	}
@@ -237,6 +299,7 @@ footer a {
 	:root {
 		--bg: #f9f9f9;
 		--fg: #222;
+		--fg-alt: #444;
 		--border: #ccc;
 		--bg-alt: #ececec;
 	}

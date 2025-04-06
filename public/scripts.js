@@ -9,15 +9,17 @@ const SPECIAL_CHARS = "!@#$%^&*()_+";
 
 const path = window.location.pathname;
 
-// Get URL parameters
-const params = new URLSearchParams(window.location.search);
-const size = params.get("size") ? parseInt(params.get("size"), 10) : null;
-
 const output = document.getElementById("output");
 const toggleLink = document.getElementById('toggle-link');
 const charOptionsDiv = document.getElementById("char-options");
 const toggleRecentsBtn = document.getElementById('toggle-recents');
 const recentCopiesDiv = document.getElementById('recent-copies');
+const sizeSlider = document.getElementById('size-range');
+const sizeValueDisplay = document.getElementById('size-value');
+
+function getSize() {
+	return parseInt(sizeSlider.value, 10) || 0;
+}
 
 const getCurrentCharset = () => {
 	let chars = "";
@@ -38,11 +40,11 @@ const generateRandomString = () => {
 	const charset = getCurrentCharset();
 	if (!generators[charset]) generators[charset] = customAlphabet(charset);
 
-	return generators[charset](size || 20);
+	return generators[charset](getSize());
 };
 
 const generateRandomWords = async () => {
-	const wordCount = size || 6;
+	const wordCount = getSize();
 	const wordsPromise = Array.from({ length: wordCount }, async () => {
 		const listNo = Math.floor(Math.random() * 24) + 1;
 		const words = await fetchWordList(listNo);
@@ -72,19 +74,28 @@ async function updateOutput() {
 	}
 }
 
-// Initial render
-updateOutput();
-
 // disable checkboxes on /words
 if (path === "/words") {
 	document.querySelectorAll("#char-options input").forEach(input => input.disabled = true);
+	sizeSlider.value = 6;
+	sizeSlider.min = 3;
+	sizeSlider.max = 12;
 } else {
 	document.querySelectorAll("#char-options input").forEach(input => {
 		input.addEventListener("change", () => {
 			updateOutput(); // regenerate on change
 		});
 	});
+	sizeSlider.value = 20;
+	sizeSlider.min = 6;
+	sizeSlider.max = 50;
 }
+
+sizeSlider.disabled = false;
+sizeValueDisplay.textContent = sizeSlider.value; // Sync label text
+
+// Initial render
+updateOutput();
 
 function isRecentsVisible() {
 	return recentCopiesDiv.classList.contains('show');
@@ -113,15 +124,15 @@ function updateRecents() {
 	} else {
 		recentCopiesDiv.innerHTML = `<ul>
 			${list.map(item => {
-				const date = new Date(item.time);
-				const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-				return `<li>
+			const date = new Date(item.time);
+			const timeStr = date.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+			return `<li>
 					<div class="recent-item">
 						<span class="text">${item.text}</span>
 						<span class="time">${timeStr}</span>
 					</div>
 				</li>`;
-			}).join('')}
+		}).join('')}
 		</ul>`;
 	}
 }
@@ -147,6 +158,12 @@ document.getElementById('regen-btn').addEventListener('click', () => {
 toggleRecentsBtn.addEventListener('click', () => {
 	if (!isRecentsVisible()) updateRecents();
 	toggleRecents();
+});
+
+// Update label live
+sizeSlider.addEventListener('input', () => {
+	sizeValueDisplay.textContent = sizeSlider.value;
+	updateOutput();
 });
 
 if (path === '/words') {
